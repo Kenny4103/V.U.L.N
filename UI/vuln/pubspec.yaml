@@ -34,10 +34,23 @@ dependencies:
   google_sign_in: ^6.1.5
   neumorphic_button: ^0.0.1+2
   http: ^1.0.0
+<<<<<<< HEAD
+=======
+  path_provider_linux: ^2.0.2
+  window_size:
+    git:
+      url: https://github.com/google/flutter-desktop-embedding
+      path: plugins/window_size
+>>>>>>> dfd6c94 (added backgroun/button)
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+<<<<<<< HEAD
+=======
+  video_player: ^2.7.2
+  chewie: ^1.7.1
+>>>>>>> dfd6c94 (added backgroun/button)
 
 dev_dependencies:
   flutter_test:
@@ -65,7 +78,14 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+<<<<<<< HEAD
 
+=======
+  assets:
+    - assets/images/vulnback.jpeg
+    - assets/images/honeycomb.jpg
+    - assets/videos/vid1.mp4
+>>>>>>> dfd6c94 (added backgroun/button)
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

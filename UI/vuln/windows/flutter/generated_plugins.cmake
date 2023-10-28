@@ -3,6 +3,10 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+<<<<<<< HEAD
+=======
+  window_size
+>>>>>>> dfd6c94 (added backgroun/button)
 )
 
 list(APPEND FLUTTER_FFI_PLUGIN_LIST
