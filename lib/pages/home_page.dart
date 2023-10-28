@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.1),
+              color: Colors.black.withOpacity(0.8),
               image: DecorationImage(
                 fit: BoxFit.contain,
                 image: const AssetImage('assets/images/vulnback.jpeg'),

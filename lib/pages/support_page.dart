@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
 //import 'package:vuln/components/scan_now.dart';
 
-class FileSPage extends StatelessWidget {
-  const FileSPage({super.key});
+class SupportPage extends StatelessWidget {
+  const SupportPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +33,7 @@ class FileSPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
-                "Version 1.0 File Select",
+                "Version 1.0 Support",
                 style: TextStyle(color: Colors.white),
               ),
             ],

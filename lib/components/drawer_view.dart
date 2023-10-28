@@ -5,6 +5,7 @@ import 'package:vuln/pages/home_page.dart';
 import 'package:vuln/pages/quarantine.dart';
 import 'package:vuln/pages/scanner_page.dart';
 import 'package:vuln/pages/settings.dart';
+import 'package:vuln/pages/support_page.dart';
 
 class DrawerView extends StatelessWidget {
   const DrawerView({super.key});
@@ -20,7 +21,7 @@ class DrawerView extends StatelessWidget {
               color: Colors.black87,
             ),
             child: Text(
-              'Drawer Header',
+              'Menu',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 24,
@@ -81,6 +82,8 @@ class DrawerView extends StatelessWidget {
             title: const Text('Support'),
             onTap: () {
               // Add navigation logic if needed
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const SupportPage()));
             },
           ),
         ],

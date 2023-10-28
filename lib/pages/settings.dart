@@ -21,8 +21,8 @@ class SettingsPage extends StatelessWidget {
             //color: Colors.amber,
             color: Colors.black,
             image: DecorationImage(
-              fit: BoxFit.contain,
-              image: const AssetImage('assets/images/vulnback.jpeg'),
+              fit: BoxFit.fill,
+              image: const AssetImage('assets/images/honeycomb.jpg'),
               colorFilter: ColorFilter.mode(
                 Colors.black.withOpacity(0.95),
                 BlendMode.dstATop,
