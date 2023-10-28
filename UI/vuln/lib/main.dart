@@ -1,14 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:vuln/pages/home_page.dart';
-<<<<<<< HEAD
-
-
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-=======
 import 'dart:io';
 import 'package:window_size/window_size.dart';
 
@@ -35,17 +26,11 @@ void applyWindowSizeConstraints() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
->>>>>>> dfd6c94 (added backgroun/button)
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Drawer Example',
       theme: ThemeData(
-<<<<<<< HEAD
-        primarySwatch: Colors.blue,
-      ),
-      home: HomePage(),
-=======
           colorScheme: const ColorScheme.highContrastDark(),
           primarySwatch: Colors.red,
           appBarTheme: const AppBarTheme(
@@ -53,7 +38,6 @@ class MyApp extends StatelessWidget {
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(Radius.circular(50))))),
       home: const HomePage(),
->>>>>>> dfd6c94 (added backgroun/button)
     );
   }
 }
