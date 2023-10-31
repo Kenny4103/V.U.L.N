@@ -12,19 +12,19 @@ def scan_file(path):
     except subprocess.CalledProcessError as e:
         return f"An error occurred while scanning {path}: {e.stderr}"
 
-def run_clamscan(target):
-    with ThreadPoolExecutor(max_workers=4) as executor:  # Adjust max_workers as needed
-        futures = [executor.submit(scan_file, file) for file in target]
+#def run_clamscan(target):
+ #   with ThreadPoolExecutor(max_workers=4) as executor:  # Adjust max_workers as needed
+  #      futures = [executor.submit(scan_file, file) for file in target]
 
-    for future in futures:
-        result = future.result()
-        if "No viruses found" in result:
-            print(result)
+#    for future in futures:
+ #       result = future.result()
+  #      if "No viruses found" in result:
+   #         print(result)
 
-    for future in futures:
-        result = future.result()
-        if "Virus detected" in result:
-            print(result)
+    #for future in futures:
+     #   result = future.result()
+      #  if "Virus detected" in result:
+       #     print(result)
 
 if __name__ == "__main__":
     target_path = '/home/kali/Documents'  # Replace with the path to the file or directory you want to scan
