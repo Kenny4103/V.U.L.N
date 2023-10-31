@@ -1,8 +1,7 @@
 import os
 import subprocess
+import sys
 
-# Replace 'directory_to_Scan' with the path to the directory you want to scan
-directory_to_Scan = input("Enter the path to the Directory you would like to scan: ")
 clean = []
 infected = []
 clean_path = []
@@ -27,6 +26,12 @@ def scan_directory(path):
         return f"An error occurred while scanning {path}: {str(e)}"
 
 if __name__ == "__main__":
+    if len(sys.argv) !=2:
+        print("Usage: python script.py <direccctory_to_san>")
+        sys.exit(1)
+
+    directory_to_Scan = sys.argv[1]
+    
     subdirs_and_files = [os.path.join(directory_to_Scan, item) for item in os.listdir(directory_to_Scan)]
     results = [scan_directory(path) for path in subdirs_and_files]
 
