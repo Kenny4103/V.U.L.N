@@ -1,15 +1,6 @@
 import os
 import subprocess
 
-
-
-# Get the directory of the Python script
-script_directory = os.path.dirname(os.path.abspath(__file__))
-print("Directory of the Python script:", script_directory)
-
-clamav_directory = "clamav-1.2.1.linux.x86_64/data/usr/local/bin"
-clamscan_path = os.path.join(script_directory, clamav_directory, "clamscan")
-
 # Replace 'directory_to_Scan' with the path to the directory you want to scan
 directory_to_Scan = input("Enter the path to the Directory you would like to scan: ")
 clean = []
