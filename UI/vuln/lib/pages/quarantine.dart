@@ -19,7 +19,7 @@ class _QPageState extends State<QPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).primaryColor,
         title:
             const Center(child: Text('Vulnerabilities Under Learned Network')),
       ),
@@ -28,13 +28,13 @@ class _QPageState extends State<QPage> {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Theme.of(context).secondaryHeaderColor,
           image: DecorationImage(
             fit: BoxFit.fill,
             image: const AssetImage('assets/images/honeycomb.jpg'),
             colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.95),
-              BlendMode.dstATop,
+              Theme.of(context).canvasColor,
+              BlendMode.colorBurn,
             ),
           ),
         ),
@@ -46,7 +46,7 @@ class _QPageState extends State<QPage> {
                 width: 600,
                 height: 400,
                 decoration: BoxDecoration(
-                  color: Colors.black,
+                  color: Theme.of(context).secondaryHeaderColor,
                   border: Border.all(),
                 ),
                 child: Column(
@@ -69,7 +69,7 @@ class _QPageState extends State<QPage> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const SearchBar(),
+                    SearchBar(hint: Theme.of(context).hintColor),
                     const SizedBox(height: 10),
                     Expanded(
                       child: SingleChildScrollView(
@@ -137,16 +137,17 @@ class TabButton extends StatelessWidget {
 }
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({super.key});
-
+  const SearchBar({super.key, required this.hint});
+  final Color hint;
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
-      child: const TextField(
+      child: TextField(
         decoration: InputDecoration(
           hintText: 'Search...',
-          border: OutlineInputBorder(),
+          hintStyle: TextStyle(color: hint),
+          border: const OutlineInputBorder(),
         ),
       ),
     );
