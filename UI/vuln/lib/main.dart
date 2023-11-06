@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vuln/components/themeprovider.dart';
+import 'package:vuln/components/themes.dart';
 import 'package:vuln/pages/home_page.dart';
 import 'dart:io';
 import 'package:window_size/window_size.dart';
@@ -10,7 +13,8 @@ void main() {
     // Apply window size constraints
     applyWindowSizeConstraints();
   }
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => ThemeProvider(), child: const MyApp()));
 }
 
 void applyWindowSizeConstraints() {
@@ -29,14 +33,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Drawer Example',
-      theme: ThemeData(
-          colorScheme: const ColorScheme.highContrastDark(),
-          primarySwatch: Colors.red,
-          appBarTheme: const AppBarTheme(
-              centerTitle: true,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(50))))),
+      theme: context.watch<ThemeProvider>().currentTheme,
       home: const HomePage(),
     );
   }

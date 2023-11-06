@@ -12,6 +12,7 @@ class HomePage extends StatelessWidget {
         title: const Center(
           child: Text('Vulnerabilities Under Learned Network'),
         ),
+        backgroundColor: Theme.of(context).primaryColor,
       ),
       drawer: const DrawerView(),
       body: Stack(
@@ -21,14 +22,10 @@ class HomePage extends StatelessWidget {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
-              color: Colors.black.withOpacity(0.8),
-              image: DecorationImage(
+              color: Theme.of(context).cardColor,
+              image: const DecorationImage(
                 fit: BoxFit.contain,
-                image: const AssetImage('assets/images/vulnback.jpeg'),
-                colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.95),
-                  BlendMode.dstATop,
-                ),
+                image: AssetImage('assets/images/vulnback.jpeg'),
               ),
             ),
             child: const Column(

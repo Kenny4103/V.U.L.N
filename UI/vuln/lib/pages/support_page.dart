@@ -9,7 +9,7 @@ class SupportPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).primaryColor,
         title:
             const Center(child: Text('Vulnerabilities Under Learned Network')),
       ),
@@ -24,8 +24,8 @@ class SupportPage extends StatelessWidget {
               fit: BoxFit.fill,
               image: const AssetImage('assets/images/honeycomb.jpg'),
               colorFilter: ColorFilter.mode(
-                Colors.black.withOpacity(0.95),
-                BlendMode.dstATop,
+                Theme.of(context).canvasColor,
+                BlendMode.colorBurn,
               ),
             ),
           ),

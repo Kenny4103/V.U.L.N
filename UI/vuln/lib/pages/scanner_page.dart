@@ -69,7 +69,7 @@ class ScannerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Theme.of(context).primaryColor,
         title:
             const Center(child: Text('Vulnerabilities Under Learned Network')),
       ),
@@ -78,13 +78,13 @@ class ScannerPage extends StatelessWidget {
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-          color: Colors.black,
+          color: Theme.of(context).primaryColor,
           image: DecorationImage(
             fit: BoxFit.fill,
             image: const AssetImage('assets/images/honeycomb.jpg'),
             colorFilter: ColorFilter.mode(
-              Colors.black.withOpacity(0.95),
-              BlendMode.dstATop,
+              Theme.of(context).canvasColor,
+              BlendMode.colorBurn,
             ),
           ),
         ),
@@ -136,8 +136,8 @@ class MyButton extends StatelessWidget {
       height: 100,
       width: 250,
       decoration: BoxDecoration(
-        color: Colors.black87,
-        border: Border.all(color: Colors.white),
+        color: Theme.of(context).primaryColor,
+        border: Border.all(color: Theme.of(context).cardColor),
       ),
       child: Column(
         children: [
@@ -148,7 +148,10 @@ class MyButton extends StatelessWidget {
               padding: const EdgeInsets.all(10.0),
               child: ElevatedButton(
                 onPressed: onPressed,
-                child: Text(buttonText),
+                child: Text(
+                  buttonText,
+                  style: TextStyle(color: Theme.of(context).indicatorColor),
+                ),
               ),
             ),
           ),
