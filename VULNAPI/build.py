@@ -1,13 +1,13 @@
 #!/usr/bin/python
-import psycopg2 #pip install psycopg2
-from config import config
+import psycopg2
+from VULNAPI import config
 
 def connect():
     """ Connect to the PostgreSQL database server """
     conn = None
     try:
         # read connection parameters
-        params = config()
+        params = config.get_db_config()
 
         # connect to the PostgreSQL server
         print('Connecting to the PostgreSQL database...')
@@ -15,16 +15,18 @@ def connect():
 		
         # create a cursor
         cur = conn.cursor()
-        
+        user_input = ""
 	# execute a statement
-        print('What is your command: ')
+        while(user_input != "q"or user_input != "Q"):
+            print("Enter 'q' or 'Q' to quit")
+            user_input = input("Enter <PostgreSQL command> followed by ';' : ")
+            
 
-        # SQL Query you'd like to run should be in the quotes with a semicolon at the end
-        cur.execute('SELECT * FROM scantype;')  
-
-        # display the PostgreSQL database return message
-        result = cur.fetchone()
-        print(result)
+            # SQL Query you'd like to run should be in the quotes with a semicolon at the end
+            cur.execute(user_input)  
+            # display the PostgreSQL database return message
+            result = cur.fetchone()
+            print(result)
        
 	# close the communication with the PostgreSQL
         cur.close()
