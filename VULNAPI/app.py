@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, render_template, request
 import psycopg2
-from VULNAPI import config
 
 app = Flask(__name__)
 
