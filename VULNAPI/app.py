@@ -69,6 +69,64 @@ def get_files():
         return jsonify({'error': str(e)})
     finally:
         close_connection(conn)
+@app.route('/getfile/<int:file_id>', methods=['GET'])
+def get_file(file_id):
+    conn = connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM files WHERE id = %s", (file_id,))
+        file_data = cur.fetchone()
+
+        if file_data:
+            file = {
+                'id': file_data[0],
+                'file': file_data[1],
+                'file_path': file_data[2],
+                'infected': file_data[3],
+                'clean': file_data[4],
+                'quarantine': file_data[5]
+            }
+            return jsonify(file)
+        else:
+            return jsonify({'error': 'File not found'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    finally:
+        close_connection(conn)
+
+@app.route('/updatefile/<int:file_id>', methods=['PUT'])
+def update_file(file_id):
+    conn = connect()
+    try:
+        data = request.get_json()
+
+        # Retrieve the existing file data
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM files WHERE id = %s", (file_id,))
+        existing_file = cur.fetchone()
+
+        if existing_file:
+            # Update fields that are present in the request
+            file_taken = data.get('file', existing_file[1])
+            file_path = data.get('file_path', existing_file[2])
+            is_infected = data.get('infected', existing_file[3])
+            is_clean = data.get('clean', existing_file[4])
+            is_quarantined = data.get('quarantine', existing_file[5])
+
+            # Perform the update
+            cur.execute(
+                "UPDATE files SET file = %s, file_path = %s, infected = %s, clean = %s, quarantine = %s WHERE id = %s",
+                (file_taken, file_path, is_infected, is_clean, is_quarantined, file_id)
+            )
+            conn.commit()
+
+            return jsonify({'message': 'file updated successfully'})
+        else:
+            return jsonify({'error': 'File not found'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    finally:
+        close_connection(conn)
 
 if __name__ == '__main__':
     print("Welcome to VULN")

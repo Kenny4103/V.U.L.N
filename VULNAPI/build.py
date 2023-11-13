@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import psycopg2
-from VULNAPI import config
+import config
 
 def connect():
     """ Connect to the PostgreSQL database server """
