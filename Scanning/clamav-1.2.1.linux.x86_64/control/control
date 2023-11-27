@@ -1,9 +1,0 @@
-Architecture: amd64
-Description: ClamAV open source email, web, and end-point anti-virus toolkit.
-Maintainer: https://www.clamav.net/
-Package: clamav
-Priority: optional
-Section: devel
-Version: 1.2.1-1
-Installed-Size: 122085
-
