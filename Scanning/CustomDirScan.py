@@ -22,12 +22,8 @@ def scan_directory(path):
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
         
         if result.returncode == 0:
-            clean.append("clean")
-            clean_path.append(f"{path}")
             return f"{path} is clean."
         else:
-            infected.append("infected")
-            infected_path.append(f"{path}")
             return f"{path} may contain infected files. ClamAV detected an issue."
     except Exception as e:
         return f"An error occurred while scanning {path}: {str(e)}"
@@ -53,13 +49,4 @@ if __name__ == "__main__":
 
     for result in results:
         print(result)
-    for x in clean:
-        print(x)
-    for y in infected:
-        print(y)
-    for z in clean_path:
-        print(z)
-    for a in infected_path:
-        print(a)
-
-
+  
