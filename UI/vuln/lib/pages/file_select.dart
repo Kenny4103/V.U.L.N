@@ -1,3 +1,4 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
 //import 'package:vuln/components/scan_now.dart';
@@ -11,9 +12,6 @@ class FileSPage extends StatefulWidget {
 
 class _FileSPageState extends State<FileSPage> {
   String selectedFile = '';
-  List<String> tempFiles = [];
-  List<String> recentFiles = ['File 1', 'File 2', 'File 3', 'File 4'];
-  List<String> fullListFiles = ['File A', 'File B', 'File C', 'File D'];
 
   @override
   Widget build(BuildContext context) {
@@ -41,57 +39,77 @@ class _FileSPageState extends State<FileSPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            Center(
-              child: Container(
-                width: 600,
-                height: 400,
-                decoration: BoxDecoration(
-                  color: Theme.of(context).secondaryHeaderColor,
-                  border: Border.all(),
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            Container(
+              width: 600,
+              height: 400,
+              decoration: BoxDecoration(
+                color: Theme.of(context).secondaryHeaderColor,
+                border: Border.all(),
+              ),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        TabButton(
-                          text: 'Recent',
-                          onPressed: () {
-                            showRecentFileList(recentFiles);
-                          },
+                        const Text(
+                          "To select a File press --> ",
+                          style: TextStyle(fontSize: 20),
                         ),
-                        TabButton(
-                          text: 'Full List',
-                          onPressed: () {
-                            showFileList(fullListFiles);
+                        ElevatedButton(
+                          autofocus: true,
+                          onPressed: () async {
+                            // Open the file picker
+                            FilePickerResult? result = await FilePicker.platform
+                                .pickFiles(type: FileType.any);
+
+                            if (result != null) {
+                              // Handle the selected file or folder
+                              String filePath = result.files.single.path!;
+                              setState(() {
+                                selectedFile = filePath;
+                              });
+
+                              print('Selected path: $filePath');
+                            } else {
+                              // User canceled the file picker
+                              print('User canceled file picker');
+                            }
                           },
+                          child: Text(
+                            'Choose File',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Theme.of(context).primaryColor),
+                          ),
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
-                    SearchBar(hint: Theme.of(context).hintColor),
-                    const SizedBox(height: 10),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: List.generate(
-                            recentFiles.length,
-                            (index) => ListTile(
-                              title: Text(recentFiles[index]),
-                              onTap: () {
-                                setState(() {
-                                  selectedFile = recentFiles[index];
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Text("The file path you selected is: "),
+                        Text(
+                          selectedFile,
+                          style: TextStyle(color: Theme.of(context).hintColor),
+                        )
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    Text('Selected File: $selectedFile'),
-                  ],
-                ),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Would you like to Scan?"),
+                      ],
+                    ),
+                  )
+                ],
               ),
             ),
             const Padding(
@@ -105,19 +123,6 @@ class _FileSPageState extends State<FileSPage> {
         ),
       ),
     );
-  }
-
-  void showFileList(List<String> files) {
-    setState(() {
-      tempFiles = recentFiles;
-      recentFiles = files;
-    });
-  }
-
-  void showRecentFileList(List<String> files) {
-    setState(() {
-      recentFiles = tempFiles;
-    });
   }
 }
 

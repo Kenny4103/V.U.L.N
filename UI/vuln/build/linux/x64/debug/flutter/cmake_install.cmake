@@ -1,8 +1,8 @@
-# Install script for directory: /home/justin1/CSC190/V.U.L.N/UI/vuln/linux/flutter
+# Install script for directory: /home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/justin1/CSC190/V.U.L.N/UI/vuln/build/linux/x64/debug/bundle")
+  set(CMAKE_INSTALL_PREFIX "/home/justin1/Desktop/V.U.L.N/UI/vuln/build/linux/x64/debug/bundle")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 

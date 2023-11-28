@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vuln/components/themeprovider.dart';
 import 'package:vuln/components/themes.dart';
+import 'package:vuln/pages/file_pick.dart';
 import 'package:vuln/pages/home_page.dart';
 import 'dart:io';
 import 'package:window_size/window_size.dart';
@@ -23,8 +24,8 @@ void applyWindowSizeConstraints() {
   // to interact with the native windowing system and set constraints.
   // Alternatively, you can use the `window_size` package.
   // Example (using `window_size` package):
-  setWindowMinSize(const Size(500, 300));
-  setWindowMaxSize(const Size(800, 600));
+  setWindowMinSize(const Size(800, 600));
+  setWindowMaxSize(const Size(1600, 1200));
 }
 
 class MyApp extends StatelessWidget {
