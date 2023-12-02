@@ -1,41 +1,213 @@
+import 'dart:convert';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
 import 'dart:io';
+import 'package:http/http.dart' as http;
+//import 'package:vuln/components/mybutton.dart';
+import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
+import 'package:vuln/components/mybutton.dart';
 
-class ScannerPage extends StatelessWidget {
+class ScannerPage extends StatefulWidget {
   const ScannerPage({Key? key}) : super(key: key);
+
+  @override
+  State<ScannerPage> createState() => _ScannerPageState();
+}
+
+String currentDirectory = Directory.current.path;
+
+String pathToScanOne = '$currentDirectory/../../Scanning/CustomDirScan.py';
+String pathToScanTwo = '$currentDirectory/../../Scanning/clamd_scan.py';
+String pathToScanthree = '$currentDirectory/../../Scanning/swift_scan.py';
+String pathToScanfour = '$currentDirectory/../../Scanning/clam_fullsys.py';
+
+class _ScannerPageState extends State<ScannerPage> {
+  //final TextEditingController textController = TextEditingController(); ##If you want the user to type in the file path
+  String selectedFile = '';
+
+  // Widget _buildScanPath(BuildContext context) {                 ##If you want the user to type in the file path
+  //   return AlertDialog(
+  //     title: const Text('Where Should I Scan?'),
+  //     content: TextField(
+  //       controller: textController,
+  //       decoration: const InputDecoration(labelText: 'Enter Your File Path'),
+  //     ),
+  //     actions: <Widget>[
+  //       TextButton(
+  //         onPressed: () {
+  //           Navigator.pop(context);
+  //         },
+  //         child: const Text('Cancel'),
+  //       ),
+  //       TextButton(
+  //           onPressed: () async {
+  //             await executePythonScript(pathToScanOne, textController.text);
+  //           },
+  //           child: const Text('Submit'))
+  //     ],
+  //   );
+  // }
+
+  // Future<void> startScan(BuildContext context) async { ##If you want the user to type in the file path
+  //   showDialog(
+  //       context: context, builder: ((context) => _buildScanPath(context)));
+  // }
+
+  Future<void> fetchProgress() async {
+    String urlString = 'http://localhost:8000';
+    Uri uri = Uri.parse(urlString);
+
+// Now you can use the 'uri' object where a Uri is expected
+
+    final response = await http.get(uri);
+    if (response.statusCode == 200) {
+      // Parse and process progress messages from the response
+      print(response.body);
+    } else {
+      // Handle error
+      print('Error fetching progress: ${response.statusCode}');
+    }
+  }
+
+  void showScanResultAlertDialog(BuildContext context, String scanResult) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Scan Result"),
+          content: Container(
+            decoration: BoxDecoration(color: Theme.of(context).canvasColor),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(scanResult),
+                ],
+              ),
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Delete Files"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Quarantine"),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void onButtonPressed(int buttonNumber) async {
     // Handle the button press based on the buttonNumber
     print('Scan $buttonNumber pressed');
 
-    // Execute the Python script
+    // Execute the Python script with progress updates
     if (buttonNumber == 1) {
-      try {
-        print('Before executing Python script');
-        await executePythonScript(
-            '/home/justin1/CSC190/V.U.L.N/Scanning/CustomDirScan.py',
-            '/home/justin1');
-        print('After executing Python script');
-      } catch (e) {
-        print('Error in onButtonPressed: $e');
+      // Custom Directory Scan Logic
+      // Pick file you wish to scan
+      // Progress bar : Report
+      scanit(pathToScanOne);
+
+      if (buttonNumber == 2) {
+        //Swift Scan
+        scanit(pathToScanthree);
+      }
+
+      if (buttonNumber == 3) {
+        //fast scan
+        scanit(pathToScanTwo);
+      }
+      if (buttonNumber == 4) {
+        //Full system scan
+        scanit(pathToScanfour);
       }
     } else {
       print("Scan Not Initialized Yet");
     }
   }
 
-  Future<void> executePythonScript(
-      String scriptPath, String directoryPath) async {
+  Future<void> scanit(String filepath) async {
     try {
-      //print('Before process run');
+      // Custom Directory Scan Logic
+      // Pick file you wish to scan
+      // Progress bar : Report
+      // Open the file picker
+      FilePickerResult? result = await FilePicker.platform
+          .pickFiles(type: FileType.custom, allowedExtensions: ['*']);
 
-      final process = await Process.run('python', [scriptPath, directoryPath]);
-      //print('Inside executePythonScript');
-      // Print the script output (stdout and stderr)
-      print('Exit Code: ${process.exitCode}');
-      print('stdout: ${process.stdout}');
-      print('stderr: ${process.stderr}');
+      if (result != null) {
+        String filePath = result.files.single.path!;
+        setState(() {
+          selectedFile = filePath;
+        });
+
+        print('Selected path: $filePath');
+
+        ProgressDialog progressDialog = ProgressDialog(context);
+        progressDialog.style(
+          message: 'Scanning...',
+          progressWidget: const CircularProgressIndicator(),
+        );
+
+        progressDialog.show();
+
+        // Define a variable to store the scan result
+        String scanResult = '';
+
+        // Execute the Python script with a callback for progress updates
+        await executePythonScript(
+          filepath,
+          selectedFile,
+          (progress) {
+            // Update the progress dialog with the received progress
+            print(progress);
+            scanResult = progress;
+            //showScanResultAlertDialog(context, scanResult);
+            //progressDialog.hide();
+            progressDialog.update(message: "Complete");
+          },
+        );
+        progressDialog.hide();
+        showScanResultAlertDialog(context, scanResult);
+      } else {
+        // User canceled the file picker
+        print('User canceled file picker');
+      }
+    } catch (e) {
+      print('Error in onButtonPressed: $e');
+    }
+  }
+
+  Future<void> executePythonScript(
+    String scriptPath,
+    String directoryPath,
+    Function(String) updateProgress,
+  ) async {
+    try {
+      final process =
+          await Process.start('python', [scriptPath, directoryPath]);
+
+      process.stdout.transform(utf8.decoder).listen((String data) {
+        // Update the progress based on the data received from the script
+        updateProgress(data);
+      });
+
+      await process.exitCode;
     } catch (e) {
       print('Error executing Python script: $e');
     }
@@ -44,22 +216,16 @@ class ScannerPage extends StatelessWidget {
   String generateDescription(int scanNumber) {
     // Customize the descriptions based on the scan number
     if (scanNumber == 1) {
-      return 'CustomDirScan.py';
+      return """Efficient with larger directories""";
     }
     if (scanNumber == 2) {
-      return 'full dependency scan 2';
+      return """More thorough then a fast scan""";
     }
     if (scanNumber == 3) {
-      return 'Individual scan';
+      return """Use on singular files and small directories""";
     }
     if (scanNumber == 4) {
-      return 'high priority scan';
-    }
-    if (scanNumber == 5) {
-      return 'quick scan';
-    }
-    if (scanNumber == 6) {
-      return 'background scan';
+      return """May take some time to complete""";
     } else {
       return 'Custom Description for Scan $scanNumber';
     }
@@ -67,6 +233,7 @@ class ScannerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -93,71 +260,45 @@ class ScannerPage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: List.generate(
-              5,
-              (index) => Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  MyButton(
-                    buttonText: 'Scan ${index * 2 + 1}',
-                    descriptionText: generateDescription(index * 2 + 1),
-                    onPressed: () => onButtonPressed(index * 2 + 1),
-                  ),
-                  MyButton(
-                    buttonText: 'Scan ${index * 2 + 2}',
-                    descriptionText: generateDescription(index * 2 + 2),
-                    onPressed: () => onButtonPressed(index * 2 + 2),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class MyButton extends StatelessWidget {
-  final String buttonText;
-  final String descriptionText;
-  final VoidCallback? onPressed;
-
-  const MyButton({
-    required this.buttonText,
-    required this.descriptionText,
-    this.onPressed,
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      height: 100,
-      width: 250,
-      decoration: BoxDecoration(
-        color: Theme.of(context).primaryColor,
-        border: Border.all(color: Theme.of(context).cardColor),
-      ),
-      child: Column(
-        children: [
-          SizedBox(
-            width: 150,
-            height: 60,
-            child: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: ElevatedButton(
-                onPressed: onPressed,
-                child: Text(
-                  buttonText,
-                  style: TextStyle(color: Theme.of(context).indicatorColor),
+              2,
+              (index) => Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Container(
+                      height: size.height * 0.35,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).highlightColor,
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: MyButton(
+                        size: size,
+                        buttonText: index == 0 ? "Directory Scan" : "Fast Scan",
+                        descriptionText: generateDescription(index * 2 + 1),
+                        onPressed: () => onButtonPressed(index * 2 + 1),
+                      ),
+                    ),
+                    Container(
+                      height: size.height * 0.35,
+                      padding: const EdgeInsets.all(8.0),
+                      decoration: BoxDecoration(
+                          color: Theme.of(context).highlightColor,
+                          borderRadius: BorderRadius.circular(20.0)),
+                      child: MyButton(
+                        size: size,
+                        buttonText:
+                            index == 1 ? "Full System Scan" : "Swift Scan",
+                        descriptionText: generateDescription(index * 2 + 2),
+                        onPressed: () => onButtonPressed(index * 2 + 2),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
           ),
-          const SizedBox(height: 8.0),
-          Text(descriptionText),
-        ],
+        ),
       ),
     );
   }
