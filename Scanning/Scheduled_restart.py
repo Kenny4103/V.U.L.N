@@ -16,7 +16,7 @@ def job():
     run_script_b()
 
 if __name__ == "__main__":
-    schedule.every().day.at("16:03").do(job)
+    schedule.every().day.at("17:01").do(job)
 
     # Keep the script running to allow the scheduler to work
     while True:
