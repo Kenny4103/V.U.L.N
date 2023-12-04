@@ -223,3 +223,72 @@ class _FileSPageState extends State<FileSPage> {
     );
   }
 }
+
+
+
+
+// import 'dart:io';
+
+// import 'package:flutter/material.dart';
+// import 'package:process_run/process_run.dart';
+
+// class FileSPage extends StatelessWidget {
+//   const FileSPage({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       appBar: AppBar(
+//         title: const Text('File Scanner'),
+//       ),
+//       body: Center(
+//         child: ElevatedButton(
+//           onPressed: () async {
+//             await _startFileScan(context);
+//           },
+//           child: const Text('Start File Scan'),
+//         ),
+//       ),
+//     );
+//   }
+
+//   Future<void> _startFileScan(BuildContext context) async {
+//     String currentDirectory = Directory.current.path;
+
+//     String pathToScanOne = '$currentDirectory/lib/services/count.dart';
+//     try {
+//       // Replace '/path/to/your/directory' with the actual path
+//       var results = await run(
+//         'dart $pathToScanOne',
+//         commandVerbose: true,
+//       );
+
+//       // Display the output in a dialog
+//       await showDialog(
+//         context: context,
+//         builder: (context) {
+//           return AlertDialog(
+//             title: Text('Scan Result'),
+//             content: SingleChildScrollView(
+//               child: Column(
+//                 children: results.map((result) {
+//                   return Text(result.stdout.toString());
+//                 }).toList(),
+//               ),
+//             ),
+//             actions: <Widget>[
+//               TextButton(
+//                 onPressed: () {
+//                   Navigator.of(context).pop();
+//                 },
+//                 child: Text('OK'),
+//               ),
+//             ],
+//           );
+//         },
+//       );
+//     } catch (e) {
+//       print('Error: $e');
+//     }
+//   }
+// }

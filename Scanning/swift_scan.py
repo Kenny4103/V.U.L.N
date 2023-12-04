@@ -1,4 +1,5 @@
 import subprocess
+import sys
 from concurrent.futures import ThreadPoolExecutor
 
 def scan_file(path):
@@ -27,5 +28,10 @@ def scan_file(path):
        #     print(result)
 
 if __name__ == "__main__":
-    target_path = '/home/kali/Documents'  # Replace with the path to the file or directory you want to scan
-    run_clamscan([target_path])
+    if len(sys.argv) != 2:
+        print("Usage: python swift_scan.py <file_path>")
+        sys.exit(1)
+
+    file_path = sys.argv[1]
+    
+    scan_file([file_path])

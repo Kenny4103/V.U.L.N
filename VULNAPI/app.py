@@ -69,6 +69,33 @@ def get_files():
         return jsonify({'error': str(e)})
     finally:
         close_connection(conn)
+
+@app.route('/getinfectedfiles')
+def get_infected_files():
+    conn = connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM files WHERE infected = true")
+        infected_files = [{'id': row[0], 'file': row[1], 'file_path': row[2], 'infected': row[3], 'clean': row[4], 'quarantine': row[5]} for row in cur.fetchall()]
+        return jsonify(infected_files)
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    finally:
+        close_connection(conn)
+
+@app.route('/getquarantinedfiles')
+def get_quarantined_files():
+    conn = connect()
+    try:
+        cur = conn.cursor()
+        cur.execute("SELECT * FROM files WHERE quarantine = true")
+        quarantined_files = [{'id': row[0], 'file': row[1], 'file_path': row[2], 'infected': row[3], 'clean': row[4], 'quarantine': row[5]} for row in cur.fetchall()]
+        return jsonify(quarantined_files)
+    except Exception as e:
+        return jsonify({'error': str(e)})
+    finally:
+        close_connection(conn)
+        
 @app.route('/getfile/<int:file_id>', methods=['GET'])
 def get_file(file_id):
     conn = connect()
@@ -125,6 +152,33 @@ def update_file(file_id):
             return jsonify({'error': 'File not found'})
     except Exception as e:
         return jsonify({'error': str(e)})
+    finally:
+        close_connection(conn)
+
+@app.route('/add_message', methods=['POST'])
+def add_message():
+    try:
+        conn = connect()
+        if conn is None:
+            return jsonify({'error': 'Unable to connect to the database'}), 500
+
+        data = request.get_json()
+        message_text = data.get('message_text')
+
+        if message_text is None:
+            return jsonify({'error': 'Message text is required'}), 400
+
+        cur = conn.cursor()
+        cur.execute("INSERT INTO feedback_messages (message) VALUES (%s) RETURNING id;", (message_text,))
+        inserted_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+
+        return jsonify({'message': 'Message added successfully', 'id': inserted_id}), 201
+
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
     finally:
         close_connection(conn)
 

@@ -3,8 +3,8 @@ import 'dart:io';
 
 Future<List<dynamic>> runPythonScript() async {
   const pythonScriptPath =
-      'lib/services/scan.py'; // Adjust the path accordingly
-  final process = await Process.start('python', [pythonScriptPath]);
+      'lib/services/clamscan.dart'; // Adjust the path accordingly
+  final process = await Process.start('dart', [pythonScriptPath]);
 
   final output = await process.stdout.transform(utf8.decoder).join();
   final errorOutput = await process.stderr.transform(utf8.decoder).join();
