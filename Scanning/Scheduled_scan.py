@@ -16,7 +16,7 @@ def job():
     run_script_b()
 
 if __name__ == "__main__":
-    schedule.every(2).minutes.do(job)
+    schedule.every(60).minutes.do(job)
     
 
     # Keep the script running to allow the scheduler to work

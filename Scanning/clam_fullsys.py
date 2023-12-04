@@ -5,7 +5,7 @@ import os
 
 def scan_directory(path):
     try:
-        cmd = ["clamscan", "-r", "/"]
+        cmd = ["sudo", "clamscan", "-r", "/"]
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         
         if result.returncode == 0:

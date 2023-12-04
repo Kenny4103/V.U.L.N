@@ -6,8 +6,16 @@ from datetime import datetime
 def run_script_b():
     try:
         # Run script_b.py using subprocess
-        subprocess.Popen(['sudo', 'python3', 'Database_reset.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
-        print("Database Reset!")
+        process = subprocess.Popen(['sudo python3 Database_reset.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+#        print("Database Reset!")
+        return_code = process.wait()
+        
+        if return_code == 0:
+            print("Database Reset!")
+        else:
+            error_message = process.stderr.read()
+            print(f"Error executing script_b.py. Return code: {return_code}. Error message: {error_message}")
+
     except subprocess.CalledProcessError as e:
         print(f"Error executing script_b.py: {e}")
 
@@ -17,7 +25,7 @@ def job():
 
 if __name__ == "__main__":
     # Schedule the job to run every 30 minutes
-    schedule.every(30).minutes.do(job)
+    schedule.every(1).minutes.do(job)
 
     # Keep the script running to allow the scheduler to work
     while True:
