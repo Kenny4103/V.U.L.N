@@ -16,11 +16,11 @@ def job():
     run_script_b()
 
 if __name__ == "__main__":
-    schedule.every().day.at("18:26").do(job)
+    schedule.every(2).minutes.do(job)
     
 
     # Keep the script running to allow the scheduler to work
     while True:
         schedule.run_pending()
-        time.sleep(1)
+        time.sleep(30)
         print ("waiting")
