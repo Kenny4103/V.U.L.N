@@ -1,5 +1,6 @@
 # ninja log v5
 <<<<<<< HEAD
+<<<<<<< HEAD
 7045	7189	0	CMakeFiles/install.util	60716b7814ba0bd
 6951	7045	1700541016804956498	intermediates_do_not_run/vuln	7b2e32cf6c553fa9
 6666	6934	1700541016688956498	CMakeFiles/vuln.dir/flutter/generated_plugin_registrant.cc.o	6e5114d77e318bb0
@@ -199,4 +200,61 @@
 31316	31710	1701533028168484863	plugins/window_size/libwindow_size_plugin.so	f1d23ae883cfce15
 31711	32071	1701533028528664862	intermediates_do_not_run/vuln	a1df695c4f939e72
 32072	32187	0	CMakeFiles/install.util	60716b7814ba0bd
+>>>>>>> justin2
+=======
+10679	10857	0	CMakeFiles/install.util	60716b7814ba0bd
+10172	10679	1701662495552174990	intermediates_do_not_run/vuln	7b2e32cf6c553fa9
+4	8590	0	flutter/_phony_	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/flutter_linux.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_view.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h	54018fe410992fb4
+8591	10172	1701662495035916991	CMakeFiles/vuln.dir/flutter/generated_plugin_registrant.cc.o	6e5114d77e318bb0
+8590	8971	1701538544090186003	plugins/window_size/libwindow_size_plugin.so	39899c9b871fd70e
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_value.h	54018fe410992fb4
+29491	31316	1701533027752276864	plugins/window_size/CMakeFiles/window_size_plugin.dir/window_size_plugin.cc.o	83a6414031698d7
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h	54018fe410992fb4
+29489	31292	1701533027736268864	CMakeFiles/vuln.dir/main.cc.o	62ba554479fe6a05
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h	54018fe410992fb4
+8590	10169	1701662495031914990	CMakeFiles/vuln.dir/my_application.cc.o	876e074e1f18f681
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_engine.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/libflutter_linux_gtk.so	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_call.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h	54018fe410992fb4
+4	8590	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_response.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/libflutter_linux_gtk.so	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_basic_message_channel.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_binary_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_binary_messenger.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_dart_project.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_engine.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_json_message_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_json_method_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_message_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_call.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_channel.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_method_response.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_plugin_registrar.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_plugin_registry.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_standard_message_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_standard_method_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_string_codec.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_value.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/fl_view.h	54018fe410992fb4
+4	9445	0	/home/justin1/Desktop/V.U.L.N/UI/vuln/linux/flutter/ephemeral/flutter_linux/flutter_linux.h	54018fe410992fb4
+4	9445	0	flutter/_phony_	54018fe410992fb4
+9446	11029	1701664074241796881	CMakeFiles/vuln.dir/flutter/generated_plugin_registrant.cc.o	6e5114d77e318bb0
+9446	11031	1701664074241796881	CMakeFiles/vuln.dir/my_application.cc.o	876e074e1f18f681
+11031	11540	1701664074753540882	intermediates_do_not_run/vuln	7b2e32cf6c553fa9
+11540	11657	0	CMakeFiles/install.util	60716b7814ba0bd
 >>>>>>> justin2

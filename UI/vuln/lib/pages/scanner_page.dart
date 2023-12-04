@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:console/console.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
@@ -77,14 +78,11 @@ class _ScannerPageState extends State<ScannerPage> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text("Scan Result"),
-          content: Container(
-            decoration: BoxDecoration(color: Theme.of(context).canvasColor),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Text(scanResult),
-                ],
-              ),
+          content: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(scanResult),
+              ],
             ),
           ),
           actions: [
@@ -121,27 +119,26 @@ class _ScannerPageState extends State<ScannerPage> {
       // Custom Directory Scan Logic
       // Pick file you wish to scan
       // Progress bar : Report
-      scanit(pathToScanOne);
+      await scanit(pathToScanOne);
+    }
+    if (buttonNumber == 2) {
+      print("inside check 1");
+      //Swift Scan
+      await scanit(pathToScanthree);
+    }
 
-      if (buttonNumber == 2) {
-        //Swift Scan
-        scanit(pathToScanthree);
-      }
-
-      if (buttonNumber == 3) {
-        //fast scan
-        scanit(pathToScanTwo);
-      }
-      if (buttonNumber == 4) {
-        //Full system scan
-        scanit(pathToScanfour);
-      }
+    if (buttonNumber == 3) {
+      //fast scan
+      scanit(pathToScanTwo);
+    }
+    if (buttonNumber == 4) {
+      fullsys();
     } else {
-      print("Scan Not Initialized Yet");
+      print("Scan not Initialized");
     }
   }
 
-  Future<void> scanit(String filepath) async {
+  Future<void> scanit(String scanfile) async {
     try {
       // Custom Directory Scan Logic
       // Pick file you wish to scan
@@ -161,7 +158,14 @@ class _ScannerPageState extends State<ScannerPage> {
         ProgressDialog progressDialog = ProgressDialog(context);
         progressDialog.style(
           message: 'Scanning...',
-          progressWidget: const CircularProgressIndicator(),
+          messageTextStyle:
+              TextStyle(color: Theme.of(context).highlightColor.withOpacity(1)),
+          progressWidget: const CircularProgressIndicator.adaptive(
+            backgroundColor: Colors.deepPurple,
+            strokeWidth: 5.5,
+          ),
+          textAlign: TextAlign.center,
+          backgroundColor: Theme.of(context).cardColor,
         );
 
         progressDialog.show();
@@ -171,7 +175,7 @@ class _ScannerPageState extends State<ScannerPage> {
 
         // Execute the Python script with a callback for progress updates
         await executePythonScript(
-          filepath,
+          scanfile,
           selectedFile,
           (progress) {
             // Update the progress dialog with the received progress
@@ -193,6 +197,47 @@ class _ScannerPageState extends State<ScannerPage> {
     }
   }
 
+  Future<void> fullsys() async {
+    //Full system scan
+    try {
+      // Custom Directory Scan Logic
+      // Pick file you wish to scan
+      // Progress bar : Report
+      // Open the file picker
+
+      ProgressDialog progressDialog = ProgressDialog(context);
+      progressDialog.style(
+        message: 'Scanning...',
+        progressWidget: const CircularProgressIndicator(),
+      );
+
+      progressDialog.show();
+
+      // Define a variable to store the scan result
+      String scanResult = '';
+
+      // Execute the Python script with a callback for progress updates
+      await executePythonScript(
+        pathToScanfour,
+        '/',
+        (progress) {
+          // Update the progress dialog with the received progress
+          print(progress);
+          scanResult = progress;
+
+          //showScanResultAlertDialog(context, scanResult);
+          //progressDialog.hide();
+          progressDialog.update(message: "Complete");
+        },
+      );
+      progressDialog.hide();
+      // ignore: use_build_context_synchronously
+      showScanResultAlertDialog(context, scanResult);
+    } catch (e) {
+      print('Error in onButtonPressed: $e');
+    }
+  }
+
   Future<void> executePythonScript(
     String scriptPath,
     String directoryPath,
@@ -204,6 +249,8 @@ class _ScannerPageState extends State<ScannerPage> {
 
       process.stdout.transform(utf8.decoder).listen((String data) {
         // Update the progress based on the data received from the script
+
+        print('This is the data: $data');
         updateProgress(data);
       });
 

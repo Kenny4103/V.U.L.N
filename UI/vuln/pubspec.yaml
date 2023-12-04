@@ -49,6 +49,8 @@ dependencies:
   provider: ^6.0.5
   file_picker: ^6.1.1
   progress_dialog_null_safe: ^1.0.7
+  console: ^4.1.0
+  process_run: ^0.13.3
 
 dev_dependencies:
   flutter_test:
