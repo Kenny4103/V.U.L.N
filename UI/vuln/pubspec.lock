@@ -72,7 +72,19 @@ packages:
       sha256: ee67cb0715911d28db6bf4af1026078bd6f0128b07a5f66fb2ed94ec6783c09a
       url: "https://pub.dev"
     source: hosted
+<<<<<<< HEAD
     version: "1.18.0"
+=======
+    version: "1.17.2"
+  console:
+    dependency: "direct main"
+    description:
+      name: console
+      sha256: e04e7824384c5b39389acdd6dc7d33f3efe6b232f6f16d7626f194f6a01ad69a
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.1.0"
+>>>>>>> f7f7a155638c38954777e02cd00ebd25eb3c59b8
   convert:
     dependency: transitive
     description:
@@ -456,6 +468,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.6"
+  process_run:
+    dependency: "direct main"
+    description:
+      name: process_run
+      sha256: "94413ec6bbd05dfe7c3002c379724f75f185ff7f0a5dfb1851a42473d84c956e"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.13.3"
   progress_dialog_null_safe:
     dependency: "direct main"
     description:
@@ -525,6 +545,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.0"
+  synchronized:
+    dependency: transitive
+    description:
+      name: synchronized
+      sha256: "5fcbd27688af6082f5abd611af56ee575342c30e87541d0245f7ff99faa02c60"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.1.0"
   term_glyph:
     dependency: transitive
     description:

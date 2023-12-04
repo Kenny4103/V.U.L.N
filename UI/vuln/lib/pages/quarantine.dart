@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
+import 'package:vuln/components/getqfilelist.dart';
 //import 'package:vuln/components/scan_now.dart';
 
 class QPage extends StatefulWidget {
@@ -71,23 +72,8 @@ class _QPageState extends State<QPage> {
                     const SizedBox(height: 10),
                     SearchBar(hint: Theme.of(context).hintColor),
                     const SizedBox(height: 10),
-                    Expanded(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: List.generate(
-                            recentFiles.length,
-                            (index) => ListTile(
-                              title: Text(recentFiles[index]),
-                              onTap: () {
-                                setState(() {
-                                  selectedFile = recentFiles[index];
-                                });
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Replace the Expanded widget with QuarantinedFilesList
+                    const QuarantinedFilesList(),
                     const SizedBox(height: 10),
                     Text('Selected File: $selectedFile'),
                   ],

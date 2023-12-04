@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
+import 'package:vuln/services/add_message.dart';
 
 class SupportPage extends StatelessWidget {
   const SupportPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController controller = TextEditingController();
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
@@ -40,6 +42,7 @@ class SupportPage extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: TextField(
+                controller: controller,
                 maxLines: 5, // Adjust based on your requirement
                 decoration: InputDecoration(
                   hintText: 'Enter your report here...',
@@ -50,9 +53,31 @@ class SupportPage extends StatelessWidget {
               ),
             ),
             ElevatedButton(
-              onPressed: () {
-                // TODO: Make API call to send the report to the database
+              onPressed: () async {
+                // Make API call to send the report to the database
                 // You can implement your API call logic here
+                await addMessage(controller.text);
+                controller.text = '';
+
+                // Show an alert after successfully sending the message
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Success'),
+                      content:
+                          const Text('Message sent, thank you for your help!!'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+                );
               },
               child: const Text('Submit Report'),
             ),
