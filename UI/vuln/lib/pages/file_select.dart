@@ -3,6 +3,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
 import 'package:vuln/components/mybutton.dart';
+import 'package:path/path.dart' as path;
+import 'package:vuln/services/add_file.dart';
+import 'package:vuln/services/delete_file.dart';
 
 class FileSPage extends StatefulWidget {
   const FileSPage({super.key});
@@ -13,8 +16,10 @@ class FileSPage extends StatefulWidget {
 
 class _FileSPageState extends State<FileSPage> {
   String selectedFile = '';
+  String scanR = '';
 
-  void showScanResultAlertDialog(BuildContext context, String scanResult) {
+  void showScanResultAlertDialog(BuildContext context, String scanResult,
+      String pathtoremove, String pathtoquarantine) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -23,19 +28,32 @@ class _FileSPageState extends State<FileSPage> {
           content: Text(scanResult),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                await _deleteFileName(selectedFile);
+                await removeScript(pathtoremove, selectedFile);
+                setState(() {
+                  selectedFile = '';
+                });
                 Navigator.of(context).pop();
               },
               child: const Text("Delete Files"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                quarantineScript(
+                    pathtoquarantine, selectedFile, 'quarantine_folder');
+                setState(() {
+                  selectedFile = '';
+                });
                 Navigator.of(context).pop();
               },
               child: const Text("Quarantine"),
             ),
             TextButton(
               onPressed: () {
+                setState(() {
+                  selectedFile = '';
+                });
                 Navigator.of(context).pop();
               },
               child: const Text("OK"),
@@ -61,6 +79,68 @@ class _FileSPageState extends State<FileSPage> {
     }
   }
 
+  Future<String> removeScript(String scriptPath, String abs) async {
+    try {
+      print('Executing Python script: python $scriptPath $abs');
+      final process = await Process.run('python', [scriptPath, abs]);
+      print('Exit Code: ${process.exitCode}');
+      print('stdout: ${process.stdout}');
+      print('stderr: ${process.stderr}');
+      return process.stdout;
+    } catch (e) {
+      print('Error executing Python script: $e');
+      return "error";
+    }
+  }
+
+  Future<String> quarantineScript(
+      String scriptPath, String abs_file, String quarantine_folder) async {
+    try {
+      print(
+          'Executing Python script: python $scriptPath $abs_file $quarantine_folder');
+      final process = await Process.run(
+          'python', [scriptPath, abs_file, quarantine_folder]);
+      print('Exit Code: ${process.exitCode}');
+      print('stdout: ${process.stdout}');
+      print('stderr: ${process.stderr}');
+      return process.stdout;
+    } catch (e) {
+      print('Error executing Python script: $e');
+      return "error";
+    }
+  }
+
+  bool containsFound(String inputString) {
+    return inputString.toLowerCase().contains('found');
+  }
+
+  String _extractFileName(String absolutepath) {
+    // Extract file name from the absolute path
+    String fileName = path.basename(absolutepath);
+
+    return fileName;
+  }
+
+  Future<void> _deleteFileName(String absolutepath) async {
+    // Extract file name from the absolute path
+    String fileName = _extractFileName(selectedFile);
+
+    await deleteFile(fileName);
+  }
+
+  Future<void> _addFileName(String absolutepath, scanR) async {
+    // Extract file name from the absolute path
+    String fileName = _extractFileName(selectedFile);
+    bool isInfected = containsFound(scanR);
+
+    await addFiles(
+        file: fileName,
+        filePath: selectedFile,
+        infected: isInfected == true ? true : false,
+        clean: isInfected == false ? true : false,
+        quarantine: false);
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -70,6 +150,8 @@ class _FileSPageState extends State<FileSPage> {
 
     // Construct the relative path to clamd_scan.py
     String pathToScanOne = '$currentDirectory/../../Scanning/clamd_scan.py';
+    String pathToremove = '$currentDirectory/../../remove.py';
+    String pathToquarantine = '$currentDirectory/../../quarantine.py';
 
     return Scaffold(
       appBar: AppBar(
@@ -201,8 +283,15 @@ class _FileSPageState extends State<FileSPage> {
                                     String scanResult =
                                         await executePythonScript(
                                             pathToScanOne, selectedFile);
+                                    setState(() {
+                                      scanR = scanResult;
+                                    });
+                                    _addFileName(selectedFile, scanR);
                                     showScanResultAlertDialog(
-                                        context, scanResult);
+                                        context,
+                                        scanResult,
+                                        pathToremove,
+                                        pathToquarantine);
                                   } else {}
                                 } catch (e) {
                                   print("Error in file select");

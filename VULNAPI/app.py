@@ -182,6 +182,28 @@ def add_message():
     finally:
         close_connection(conn)
 
+@app.route('/deletefile', methods=['DELETE'])
+def delete_file():
+    conn = connect()
+    try:
+        data = request.get_json()
+        file_name = data['file_name']
+
+        if not file_name:
+            return jsonify({'error': 'File name is required'}), 400
+
+        cur = conn.cursor()
+        cur.execute("DELETE FROM files WHERE file = %s", (file_name,))
+        conn.commit()
+        cur.close()
+
+        return jsonify({'message': f'File {file_name} deleted successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    finally:
+        close_connection(conn)
+
+
 if __name__ == '__main__':
     print("Welcome to VULN")
     app.run(host='0.0.0.0',port=5000)
