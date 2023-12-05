@@ -13,81 +13,99 @@ class DrawerView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      child: ListView(
-        padding: EdgeInsets.zero,
-        children: <Widget>[
-          const DrawerHeader(
-            decoration: BoxDecoration(
-              color: Colors.black87,
-            ),
-            child: Text(
-              'Menu',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
+      child: Container(
+        color: Colors.grey[900],
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: <Widget>[
+            Container(
+              height: 120.0,
+              child: DrawerHeader(
+                margin: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
+                decoration: BoxDecoration(
+                  color: Colors.black87,
+                  image: DecorationImage(
+                    fit: BoxFit.cover,
+                    image: AssetImage('assets/images/vulnback.jpeg'),
+                  ),
+                ),
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Text(
+                      'VULN',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
-          ),
-          ListTile(
-            title: const Text('Home'),
-            onTap: () {
-              // Add navigation logic if needed
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const HomePage()));
-            },
-          ),
-          ListTile(
-            title: const Text('Scanner'),
-            onTap: () {
-              // Add navigation logic if needed
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const ScannerPage()));
-            },
-          ),
-          ListTile(
-            title: const Text('File Select'),
-            onTap: () {
-              // Add navigation logic if needed
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const FileSPage()));
-            },
-          ),
-          ListTile(
-            title: const Text('Quarantine'),
-            onTap: () {
-              // Add navigation logic if needed
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const QPage()));
-            },
-          ),
-          ListTile(
-            title: const Text('Settings'),
-            onTap: () {
-              // Add navigation logic if needed
-              Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const SettingsPage()));
-            },
-          ),
-          ListTile(
-            title: const Text('About Us'),
-            onTap: () {
-              // Add navigation logic if needed
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const AboutPage()));
-            },
-          ),
-          ListTile(
-            title: const Text('Support'),
-            onTap: () {
-              // Add navigation logic if needed
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const SupportPage()));
-            },
-          ),
-        ],
+            _createDrawerItem(
+              context,
+              icon: Icons.home,
+              text: 'Home',
+              onTap: () => _navigateTo(context, const HomePage()),
+            ),
+            _createDrawerItem(
+              context,
+              icon: Icons.security,
+              text: 'Scanner',
+              onTap: () => _navigateTo(context, const ScannerPage()),
+            ),
+            _createDrawerItem(
+              context,
+              icon: Icons.folder_open,
+              text: 'File Select',
+              onTap: () => _navigateTo(context, const FileSPage()),
+            ),
+            _createDrawerItem(
+              context,
+              icon: Icons.delete_outline,
+              text: 'Quarantine',
+              onTap: () => _navigateTo(context, const QPage()),
+            ),
+            _createDrawerItem(
+              context,
+              icon: Icons.settings,
+              text: 'Settings',
+              onTap: () => _navigateTo(context, const SettingsPage()),
+            ),
+            _createDrawerItem(
+              context,
+              icon: Icons.info_outline,
+              text: 'About Us',
+              onTap: () => _navigateTo(context, const AboutPage()),
+            ),
+            _createDrawerItem(
+              context,
+              icon: Icons.contact_support_outlined,
+              text: 'Support',
+              onTap: () => _navigateTo(context, const SupportPage()),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Widget _createDrawerItem(BuildContext context, {required IconData icon, required String text, VoidCallback? onTap}) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.white70),
+      title: Text(text, style: TextStyle(color: Colors.white)),
+      onTap: () {
+        Navigator.pop(context); // Close the drawer before navigating
+        onTap?.call();
+      },
+    );
+  }
+
+  void _navigateTo(BuildContext context, Widget page) {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => page));
   }
 }

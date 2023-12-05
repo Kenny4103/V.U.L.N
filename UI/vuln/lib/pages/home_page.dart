@@ -1,4 +1,3 @@
-// home_page.dart
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
 
@@ -17,7 +16,6 @@ class HomePage extends StatelessWidget {
       drawer: const DrawerView(),
       body: Stack(
         children: [
-          // Include BackgroundVideo here
           Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
