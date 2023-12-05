@@ -121,15 +121,17 @@ def get_file(file_id):
     finally:
         close_connection(conn)
 
-@app.route('/updatefile/<int:file_id>', methods=['PUT'])
-def update_file(file_id):
+@app.route('/updatefile', methods=['PUT'])
+def update_file():
     conn = connect()
+    
     try:
         data = request.get_json()
+        file = data['file']
 
         # Retrieve the existing file data
         cur = conn.cursor()
-        cur.execute("SELECT * FROM files WHERE id = %s", (file_id,))
+        cur.execute("SELECT * FROM files WHERE file = %s", (file,))
         existing_file = cur.fetchone()
 
         if existing_file:
@@ -142,8 +144,8 @@ def update_file(file_id):
 
             # Perform the update
             cur.execute(
-                "UPDATE files SET file = %s, file_path = %s, infected = %s, clean = %s, quarantine = %s WHERE id = %s",
-                (file_taken, file_path, is_infected, is_clean, is_quarantined, file_id)
+                "UPDATE files SET file = %s, file_path = %s, infected = %s, clean = %s, quarantine = %s WHERE file = %s",
+                (file_taken, file_path, is_infected, is_clean, is_quarantined, file)
             )
             conn.commit()
 

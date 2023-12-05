@@ -6,6 +6,7 @@ import 'package:vuln/components/mybutton.dart';
 import 'package:path/path.dart' as path;
 import 'package:vuln/services/add_file.dart';
 import 'package:vuln/services/delete_file.dart';
+import 'package:vuln/services/update.dart';
 
 class FileSPage extends StatefulWidget {
   const FileSPage({super.key});
@@ -103,6 +104,9 @@ class _FileSPageState extends State<FileSPage> {
       print('Exit Code: ${process.exitCode}');
       print('stdout: ${process.stdout}');
       print('stderr: ${process.stderr}');
+      var temp = _extractFileName(abs_file);
+      final updateData = {'quarantine': true};
+      await updateFile(temp, updateData);
       return process.stdout;
     } catch (e) {
       print('Error executing Python script: $e');
