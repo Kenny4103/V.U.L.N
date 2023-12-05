@@ -55,6 +55,45 @@ class _ScannerPageState extends State<ScannerPage> {
   //   showDialog(
   //       context: context, builder: ((context) => _buildScanPath(context)));
   // }
+  Future<void> processScanOutput(String scanOutput) async {
+    // Parse the output to get file paths and status
+    List<Map<String, String>> filesInfo = parseScanOutput(scanOutput);
+
+    // Make asynchronous API calls for each file
+    await Future.forEach(filesInfo, (fileInfo) async {
+      String filePath = fileInfo['filePath'] ?? '';
+      String status = fileInfo['status'] ?? '';
+
+      // Make API call
+      //await makeAPICall(filePath, status);
+    });
+  }
+
+  List<Map<String, String>> parseScanOutput(String scanOutput) {
+    List<Map<String, String>> filesInfo = [];
+
+    // Split the scan output into lines
+    List<String> lines = scanOutput.split('\n');
+
+    // Define a regular expression pattern to match file information
+    RegExp fileRegExp = RegExp(r'File: (.+) is (\w+)');
+
+    for (String line in lines) {
+      // Attempt to match the line with the regular expression
+      Match? match = fileRegExp.firstMatch(line);
+
+      if (match != null) {
+        // Extract matched groups (filePath and status)
+        String filePath = match.group(1)!;
+        String status = match.group(2)!;
+
+        // Add file information to the list
+        filesInfo.add({'filePath': filePath, 'status': status});
+      }
+    }
+
+    return filesInfo;
+  }
 
   Future<void> fetchProgress() async {
     String urlString = 'http://localhost:8000';

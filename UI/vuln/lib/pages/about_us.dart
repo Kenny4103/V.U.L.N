@@ -30,13 +30,16 @@ class AboutPage extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: Container(
+              width: MediaQuery.of(context).size.width * 0.8,
+              height: MediaQuery.of(context).size.height * 0.8,
               padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
-                color: Colors.black,
+                color: Colors.black.withOpacity(0.8),
                 borderRadius: BorderRadius.circular(16.0),
               ),
-              constraints: const BoxConstraints(maxWidth: 600.0),
+              //constraints: const BoxConstraints(maxWidth: 600.0),
               child: const Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
@@ -45,7 +48,7 @@ class AboutPage extends StatelessWidget {
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
-                      fontFamily: 'Times New Roman',
+                      fontFamily: 'Roboto',
                     ),
                   ),
                   SizedBox(height: 16.0),

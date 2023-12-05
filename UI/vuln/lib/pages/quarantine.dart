@@ -21,13 +21,14 @@ class _QPageState extends State<QPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title:
-            const Center(child: Text('Vulnerabilities Under Learned Network')),
+        title: const Center(
+          child: Text('Vulnerabilities Under Learned Network'),
+        ),
       ),
       drawer: const DrawerView(),
       body: Container(
         width: MediaQuery.of(context).size.width,
-        height: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
         decoration: BoxDecoration(
           color: Theme.of(context).secondaryHeaderColor,
           image: DecorationImage(
@@ -55,25 +56,32 @@ class _QPageState extends State<QPage> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        TabButton(
-                          text: 'Recent',
-                          onPressed: () {
-                            showRecentFileList(recentFiles);
-                          },
-                        ),
-                        TabButton(
-                          text: 'Full List',
-                          onPressed: () {
-                            showFileList(fullListFiles);
-                          },
-                        ),
+                        Text(
+                          'Quarantine:',
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).canvasColor),
+                        )
+                        // TabButton(
+                        //   text: 'Recent',
+                        //   onPressed: () {
+                        //     showRecentFileList(recentFiles);
+                        //   },
+                        // ),
+                        // TabButton(
+                        //   text: 'Full List',
+                        //   onPressed: () {
+                        //     showFileList(fullListFiles);
+                        //   },
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 10),
                     SearchBar(hint: Theme.of(context).hintColor),
                     const SizedBox(height: 10),
-                    // Replace the Expanded widget with QuarantinedFilesList
-                    const QuarantinedFilesList(),
+                    Expanded(
+                      child: QuarantinedFilesList(),
+                    ),
                     const SizedBox(height: 10),
                     Text('Selected File: $selectedFile'),
                   ],
