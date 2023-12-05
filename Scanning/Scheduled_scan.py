@@ -1,21 +1,16 @@
 import subprocess
-import schedule
-import time
-from datetime import datetime
 
-def run_script_b():
+def run_schedule():
     try:
-        # Run script_b.py using subprocess
-        subprocess.Popen(['sudo', 'python3', 'CustomDirScan.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
-        print("Schedule Started!")
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing script_b.py: {e}")
-
-def job():
-    print(f"Running job at {datetime.now()}")
-    run_script_b()
+        # Run the command and redirect output and error to null
+        with open('scan_output.log', 'w') as out_file, open('scan_error.log', 'w') as err_file:
+            subprocess.Popen(['python3', 'Scheduled_scan.py'], stdout=out_file, stderr=err_file, text=True, close_fds=True)
+        print("Program started in the background.")
+    except Exception as e:
+        print(f"Error executing the command: {e}")
 
 if __name__ == "__main__":
+<<<<<<< HEAD
     schedule.every(60).minutes.do(job)
     
 
@@ -24,3 +19,6 @@ if __name__ == "__main__":
         schedule.run_pending()
         time.sleep(30)
         print ("waiting")
+=======
+    run_schedule()
+>>>>>>> justin
