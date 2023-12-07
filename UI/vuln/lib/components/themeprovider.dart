@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vuln/components/themes.dart';
 
 class ThemeProvider extends ChangeNotifier {
-  ThemeData _currentTheme = darkTheme;
+  ThemeData _currentTheme = redTheme;
 
   ThemeData get currentTheme => _currentTheme;
 

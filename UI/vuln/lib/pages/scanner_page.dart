@@ -9,6 +9,10 @@ import 'package:http/http.dart' as http;
 //import 'package:vuln/components/mybutton.dart';
 import 'package:progress_dialog_null_safe/progress_dialog_null_safe.dart';
 import 'package:vuln/components/mybutton.dart';
+import 'package:vuln/pages/home_page.dart';
+import 'package:vuln/services/add_file.dart';
+import 'package:path/path.dart' as path;
+import 'package:vuln/services/update.dart';
 
 class ScannerPage extends StatefulWidget {
   const ScannerPage({Key? key}) : super(key: key);
@@ -25,74 +29,97 @@ String pathToScanthree = '$currentDirectory/../../Scanning/swift_scan.py';
 String pathToScanfour = '$currentDirectory/../../Scanning/clam_fullsys.py';
 
 class _ScannerPageState extends State<ScannerPage> {
-  //final TextEditingController textController = TextEditingController(); ##If you want the user to type in the file path
   String selectedFile = '';
 
-  // Widget _buildScanPath(BuildContext context) {                 ##If you want the user to type in the file path
-  //   return AlertDialog(
-  //     title: const Text('Where Should I Scan?'),
-  //     content: TextField(
-  //       controller: textController,
-  //       decoration: const InputDecoration(labelText: 'Enter Your File Path'),
-  //     ),
-  //     actions: <Widget>[
-  //       TextButton(
-  //         onPressed: () {
-  //           Navigator.pop(context);
-  //         },
-  //         child: const Text('Cancel'),
-  //       ),
-  //       TextButton(
-  //           onPressed: () async {
-  //             await executePythonScript(pathToScanOne, textController.text);
-  //           },
-  //           child: const Text('Submit'))
-  //     ],
-  //   );
-  // }
+  List<String> infectedList = []; //current list of files found to be infected
+  //changes with each scan instance
 
-  // Future<void> startScan(BuildContext context) async { ##If you want the user to type in the file path
-  //   showDialog(
-  //       context: context, builder: ((context) => _buildScanPath(context)));
-  // }
-  Future<void> processScanOutput(String scanOutput) async {
-    // Parse the output to get file paths and status
-    List<Map<String, String>> filesInfo = parseScanOutput(scanOutput);
+  List<String> parseClamscanOutput(String output) {
+    // Define a regular expression to match the file paths in the ClamAV output
+    RegExp regexPattern = RegExp(r'^([^:]+): (.+?) FOUND$');
 
-    // Make asynchronous API calls for each file
-    await Future.forEach(filesInfo, (fileInfo) async {
-      String filePath = fileInfo['filePath'] ?? '';
-      String status = fileInfo['status'] ?? '';
+    List<String> infectedFiles = [];
 
-      // Make API call
-      //await makeAPICall(filePath, status);
+    LineSplitter.split(output).forEach((line) {
+      Match? match = regexPattern.firstMatch(line);
+      if (match != null) {
+        // Extract the file path and add it to the list
+        String filePath = match.group(1)!.trim();
+        infectedFiles.add(filePath);
+      }
     });
+
+    return infectedFiles;
   }
 
-  List<Map<String, String>> parseScanOutput(String scanOutput) {
-    List<Map<String, String>> filesInfo = [];
+  String _extractFileName(String absolutepath) {
+    // Extract file name from the absolute path
+    String fileName = path.basename(absolutepath);
 
-    // Split the scan output into lines
-    List<String> lines = scanOutput.split('\n');
+    return fileName;
+  }
 
-    // Define a regular expression pattern to match file information
-    RegExp fileRegExp = RegExp(r'File: (.+) is (\w+)');
+  Future<void> addinfected(String output) async {
+    List<String> infectious = parseClamscanOutput(output);
+    setState(() {
+      infectedList = infectious;
+    });
 
-    for (String line in lines) {
-      // Attempt to match the line with the regular expression
-      Match? match = fileRegExp.firstMatch(line);
-
-      if (match != null) {
-        // Extract matched groups (filePath and status)
-        String filePath = match.group(1)!;
-        String status = match.group(2)!;
-
-        // Add file information to the list
-        filesInfo.add({'filePath': filePath, 'status': status});
-      }
+    for (String file in infectious) {
+      String base = _extractFileName(file);
+      addFiles(
+          file: base,
+          filePath: file,
+          infected: true,
+          clean: false,
+          quarantine: false);
     }
+  }
 
-    return filesInfo;
+  Future<String> quarantineScript(
+      String scriptPath, String abs_file, String quarantine_folder) async {
+    try {
+      print(
+          'Executing Python script: python $scriptPath $abs_file $quarantine_folder');
+      final process = await Process.run(
+          'python', [scriptPath, abs_file, quarantine_folder]);
+
+      var temp = _extractFileName(abs_file);
+      final updateData = {'quarantine': true};
+      await updateFile(temp, updateData);
+      return process.stdout;
+    } catch (e) {
+      print('Error executing Python script: $e');
+      return "error";
+    }
+  }
+
+  Future<void> quarantineall() async {
+    String pathToquarantine = '$currentDirectory/../../quarantine.py';
+
+    for (String file in infectedList) {
+      await quarantineScript(pathToquarantine, file, 'quarantine_folder');
+    }
+  }
+
+  Future<String> removeScript(String scriptPath, String abs) async {
+    try {
+      print('Executing Python script: python $scriptPath $abs');
+      final process = await Process.run('python', [scriptPath, abs]);
+
+      return process.stdout;
+    } catch (e) {
+      print('Error executing Python script: $e');
+      return "error";
+    }
+  }
+
+  Future<void> removeall() async {
+    String pathToremove = '$currentDirectory/../../remove.py';
+
+    for (String file in infectedList) {
+      await removeScript(pathToremove, file);
+    }
   }
 
   Future<void> fetchProgress() async {
@@ -126,13 +153,17 @@ class _ScannerPageState extends State<ScannerPage> {
           ),
           actions: [
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                //Code to Delete all infected files
+                await removeall();
                 Navigator.of(context).pop();
               },
               child: const Text("Delete Files"),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
+                //Code to Qurantine all infected files
+                await quarantineall();
                 Navigator.of(context).pop();
               },
               child: const Text("Quarantine"),
@@ -158,17 +189,17 @@ class _ScannerPageState extends State<ScannerPage> {
       // Custom Directory Scan Logic
       // Pick file you wish to scan
       // Progress bar : Report
-      await scanit(pathToScanOne);
+      await scanit(pathToScanOne, 0);
     }
     if (buttonNumber == 2) {
       print("inside check 1");
       //Swift Scan
-      await scanit(pathToScanthree);
+      await scanit(pathToScanthree, 0);
     }
 
     if (buttonNumber == 3) {
       //fast scan
-      scanit(pathToScanTwo);
+      scanit(pathToScanTwo, 1);
     }
     if (buttonNumber == 4) {
       fullsys();
@@ -177,14 +208,26 @@ class _ScannerPageState extends State<ScannerPage> {
     }
   }
 
-  Future<void> scanit(String scanfile) async {
+  Future<void> scanit(String scanfile, int choice) async {
     try {
       // Custom Directory Scan Logic
       // Pick file you wish to scan
       // Progress bar : Report
       // Open the file picker
-      FilePickerResult? result = await FilePicker.platform
-          .pickFiles(type: FileType.custom, allowedExtensions: ['*']);
+      FilePickerResult? result;
+
+      if (choice == 0) {
+        result = await FilePicker.platform.pickFiles(
+          type: FileType.custom,
+          allowedExtensions: ['directory'],
+          allowMultiple: false,
+        );
+      } else {
+        result = await FilePicker.platform.pickFiles(
+            type: FileType.custom,
+            allowedExtensions: ['*'],
+            allowMultiple: false);
+      }
 
       if (result != null) {
         String filePath = result.files.single.path!;
@@ -226,6 +269,7 @@ class _ScannerPageState extends State<ScannerPage> {
           },
         );
         progressDialog.hide();
+        await addinfected(scanResult);
         showScanResultAlertDialog(context, scanResult);
       } else {
         // User canceled the file picker
@@ -323,8 +367,16 @@ class _ScannerPageState extends State<ScannerPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title:
-            const Center(child: Text('Vulnerabilities Under Learned Network')),
+        title: Center(
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
+                },
+                child: const Text('Vulnerabilities Under Learned Network'))),
       ),
       drawer: const DrawerView(),
       body: Container(

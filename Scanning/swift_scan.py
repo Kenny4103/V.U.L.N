@@ -1,21 +1,19 @@
 import subprocess
 import sys
 import os
-import logging
 
-def scan_file(path):
+def scan_directory_for_infections(path):
     try:
-        result = subprocess.run(['clamscan', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
+        result = subprocess.run(['clamscan', '-r', '--infected', path], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, check=True)
 
         if result.returncode == 0:
-            return f"No viruses found in {path}"
+            return "No infected files found."
         else:
-            return f"Virus detected in {path}:\n{result.stdout}"
+            return result.stdout
     except subprocess.CalledProcessError as e:
-        return f"Error scanning {path}: {e.stderr}"
+        return f"{e.stdout}"
     except OSError as e:
         return f"Error accessing {path}: {e}"
-
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
@@ -29,14 +27,11 @@ if __name__ == "__main__":
             print(f"Error: Directory '{directory_to_scan}' not found.")
             sys.exit(1)
 
-        for root, dirs, files in os.walk(directory_to_scan):
-            for file in files:
-                path = os.path.join(root, file)
-                print(scan_file(path))
+        # Use the absolute path to handle the current directory correctly
+        abs_path = os.path.abspath(directory_to_scan)
+
+        scan_result = scan_directory_for_infections(abs_path)
+        print(scan_result)
+
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
-<<<<<<< HEAD
-        logging.exception("An unexpected error occurred.")
-=======
-        logging.exception("An unexpected error occurred.")
->>>>>>> justin

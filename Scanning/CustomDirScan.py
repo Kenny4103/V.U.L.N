@@ -4,13 +4,15 @@ import sys
 
 def scan_directory(path):
     try:
-        cmd = ["clamscan", "-r", path]
+        cmd = ["clamscan", "-r","--infected", path]
         result = subprocess.run(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         
         if result.returncode == 0:
             return f"{path} is clean."
         else:
-            return f"{path} may contain infected files. ClamAV detected an issue."
+            return result.stdout
+    except subprocess.CalledProcessError as e:
+        return f"{e.stdout}"
     except Exception as e:
         return f"An error occurred while scanning {path}: {e}"
 

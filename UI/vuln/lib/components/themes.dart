@@ -5,6 +5,7 @@ ThemeData lightTheme = ThemeData(
     primaryColor: Colors.white,
     indicatorColor: Colors.white,
     secondaryHeaderColor: Colors.grey.shade400,
+    focusColor: Colors.black,
     hintColor: Colors.black,
     cardColor: Colors.black
         .withOpacity(0.99), //controls homepage or any page background w/o image
@@ -26,6 +27,7 @@ ThemeData darkTheme = ThemeData(
     indicatorColor: Colors.white,
     secondaryHeaderColor: Colors.grey.shade900,
     hintColor: Colors.white54,
+    focusColor: Colors.white,
     cardColor:
         Colors.black, //controls homepage or any page background w/o image
     canvasColor:
@@ -46,6 +48,7 @@ ThemeData redTheme = ThemeData(
     indicatorColor: const Color.fromARGB(255, 128, 16, 16),
     secondaryHeaderColor: Colors.grey.shade900,
     hintColor: Colors.red.shade700,
+    focusColor: Colors.black,
     cardColor: Colors.black
         .withOpacity(0.99), //controls homepage or any page background w/o image
     canvasColor:
@@ -68,6 +71,7 @@ ThemeData blueTheme = ThemeData(
         const Color.fromARGB(255, 16, 23, 128), //controls color of word scan
     secondaryHeaderColor: Colors.grey.shade900,
     hintColor: Colors.blue.shade700,
+    focusColor: Colors.amber,
     cardColor: Colors.black
         .withOpacity(0.99), //controls homepage or any page background w/o image
     canvasColor:
@@ -90,6 +94,7 @@ ThemeData greenTheme = ThemeData(
         const Color.fromARGB(255, 5, 119, 20), //controls color of word scan
     secondaryHeaderColor: Colors.grey.shade900,
     hintColor: const Color.fromARGB(255, 93, 210, 25),
+    focusColor: Colors.redAccent,
     cardColor: Colors.black
         .withOpacity(0.99), //controls homepage or any page background w/o image
     canvasColor:

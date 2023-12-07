@@ -33,29 +33,39 @@ def begin():
 def add_files():
     conn = connect()
     try:
-        # Your logic to add a new file to the table
         data = request.get_json()
-        print('Received data:', data)  # Add this line to print received data for debugging
+        print('Received data:', data)
 
         file_taken = data.get('file', '')
-        file_path = data.get('file_path', '')  # Added file path field
+        file_path = data.get('file_path', '')
         is_infected = data.get('infected', False)
         is_clean = data.get('clean', False)
         is_quarantined = data.get('quarantine', False)
 
         cur = conn.cursor()
-        cur.execute(
-            "INSERT INTO files (file, file_path, infected, clean, quarantine) VALUES (%s, %s, %s, %s, %s)",
-            (file_taken, file_path, is_infected, is_clean, is_quarantined)
-        )
-        conn.commit()
-        cur.close()
 
-        return jsonify({'message': 'file added successfully'})
+        # Check if the file already exists in the database
+        cur.execute("SELECT COUNT(*) FROM files WHERE file = %s AND file_path = %s",
+                    (file_taken, file_path))
+        count = cur.fetchone()[0]
+
+        if count == 0:
+            # File doesn't exist, proceed with insertion
+            cur.execute(
+                "INSERT INTO files (file, file_path, infected, clean, quarantine) VALUES (%s, %s, %s, %s, %s)",
+                (file_taken, file_path, is_infected, is_clean, is_quarantined)
+            )
+            conn.commit()
+            return jsonify({'message': 'File added successfully'})
+        else:
+            # File already exists, return a message
+            return jsonify({'message': 'File already exists in the database'})
+
     except Exception as e:
         return jsonify({'error': str(e)})
     finally:
         close_connection(conn)
+
 
 @app.route('/getfiles')
 def get_files():
