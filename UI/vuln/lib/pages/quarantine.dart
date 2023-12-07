@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
 import 'package:vuln/components/getqfilelist.dart';
+import 'package:vuln/pages/home_page.dart';
 //import 'package:vuln/components/scan_now.dart';
 
 class QPage extends StatefulWidget {
@@ -13,17 +14,23 @@ class QPage extends StatefulWidget {
 class _QPageState extends State<QPage> {
   String selectedFile = '';
   List<String> tempFiles = [];
-  List<String> recentFiles = ['File 1', 'File 2', 'File 3', 'File 4'];
-  List<String> fullListFiles = ['File A', 'File B', 'File C', 'File D'];
+  String searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title: const Center(
-          child: Text('Vulnerabilities Under Learned Network'),
-        ),
+        title: Center(
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
+                },
+                child: const Text('Vulnerabilities Under Learned Network'))),
       ),
       drawer: const DrawerView(),
       body: Container(
@@ -62,28 +69,24 @@ class _QPageState extends State<QPage> {
                               fontSize: 18,
                               color: Theme.of(context).canvasColor),
                         )
-                        // TabButton(
-                        //   text: 'Recent',
-                        //   onPressed: () {
-                        //     showRecentFileList(recentFiles);
-                        //   },
-                        // ),
-                        // TabButton(
-                        //   text: 'Full List',
-                        //   onPressed: () {
-                        //     showFileList(fullListFiles);
-                        //   },
-                        // ),
                       ],
                     ),
                     const SizedBox(height: 10),
-                    SearchBar(hint: Theme.of(context).hintColor),
-                    const SizedBox(height: 10),
-                    Expanded(
-                      child: QuarantinedFilesList(),
+                    SearchBar(
+                      hint: Theme.of(context).hintColor,
+                      onSearch: (query) {
+                        //print('Search query: $query');
+                        setState(() {
+                          searchQuery = query;
+                        });
+                      },
                     ),
                     const SizedBox(height: 10),
-                    Text('Selected File: $selectedFile'),
+                    Expanded(
+                      child: QuarantinedFilesList(searchQuery: searchQuery),
+                    ),
+                    const SizedBox(height: 10),
+                    //Text('Selected File: $selectedFile'),
                   ],
                 ),
               ),
@@ -100,44 +103,21 @@ class _QPageState extends State<QPage> {
       ),
     );
   }
-
-  void showFileList(List<String> files) {
-    setState(() {
-      tempFiles = recentFiles;
-      recentFiles = files;
-    });
-  }
-
-  void showRecentFileList(List<String> files) {
-    setState(() {
-      recentFiles = tempFiles;
-    });
-  }
-}
-
-class TabButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const TabButton({super.key, required this.text, required this.onPressed});
-
-  @override
-  Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: onPressed,
-      child: Text(text),
-    );
-  }
 }
 
 class SearchBar extends StatelessWidget {
-  const SearchBar({super.key, required this.hint});
+  const SearchBar({Key? key, required this.hint, required this.onSearch})
+      : super(key: key);
+
   final Color hint;
+  final void Function(String) onSearch;
+
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
       child: TextField(
+        onChanged: onSearch, // Trigger search on text change
         decoration: InputDecoration(
           hintText: 'Search...',
           hintStyle: TextStyle(color: hint),

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
 import 'package:vuln/components/mybutton.dart';
 import 'package:path/path.dart' as path;
+import 'package:vuln/pages/home_page.dart';
 import 'package:vuln/services/add_file.dart';
 import 'package:vuln/services/delete_file.dart';
 import 'package:vuln/services/update.dart';
@@ -160,8 +161,16 @@ class _FileSPageState extends State<FileSPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title:
-            const Center(child: Text('Vulnerabilities Under Learned Network')),
+        title: Center(
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
+                },
+                child: const Text('Vulnerabilities Under Learned Network'))),
       ),
       drawer: const DrawerView(),
       body: Container(
@@ -196,7 +205,7 @@ class _FileSPageState extends State<FileSPage> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
                           const Text(
                             "To select a File press: ",

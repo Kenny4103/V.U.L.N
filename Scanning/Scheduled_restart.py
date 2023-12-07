@@ -6,7 +6,7 @@ from datetime import datetime
 def run_script_b():
     try:
         # Run script_b.py using subprocess
-        process = subprocess.Popen(['sudo python3 Database_reset.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
+        process = subprocess.Popen(['python3 Database_reset.py'], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True)
 #        print("Database Reset!")
         return_code = process.wait()
         
@@ -31,4 +31,4 @@ if __name__ == "__main__":
     while True:
         schedule.run_pending()
         time.sleep(1)
-        print("Waiting for the next scheduled run...")
+        

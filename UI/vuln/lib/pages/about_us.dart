@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
+import 'package:vuln/pages/home_page.dart';
 
 class AboutPage extends StatelessWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -9,8 +10,16 @@ class AboutPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title:
-            const Center(child: Text('Vulnerabilities Under Learned Network')),
+        title: Center(
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
+                },
+                child: const Text('Vulnerabilities Under Learned Network'))),
       ),
       drawer: const DrawerView(),
       body: Container(
@@ -42,9 +51,22 @@ class AboutPage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'About Us',
+                      style: TextStyle(
+                          fontFamily: 'Times New Roman', fontSize: 40),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
                   Text(
                     'Welcome to our world of cybersecurity, where passion meets protection! '
-                    'At VULN, we are driven by an unyielding commitment to securing the digital landscape and safeguarding the online realms we inhabit.',
+                    ' At VULN, we are driven by an unyielding commitment to securing the digital landscape and safeguarding the online realms we inhabit.'
+                    ' Every day another victim is taken advantage of by scammers and vicious hackers.'
+                    ' Help spread the word and keep your loved ones safe',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 20.0,
@@ -52,6 +74,12 @@ class AboutPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16.0),
+                  Align(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        '-V.U.L.N Creator',
+                        style: TextStyle(fontSize: 16),
+                      ))
                   // Add more Text widgets for other sections of the content
                 ],
               ),

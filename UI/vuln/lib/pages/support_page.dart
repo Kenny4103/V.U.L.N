@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vuln/components/drawer_view.dart';
+import 'package:vuln/pages/home_page.dart';
 import 'package:vuln/services/add_message.dart';
 
 class SupportPage extends StatelessWidget {
@@ -11,8 +12,16 @@ class SupportPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
-        title:
-            const Center(child: Text('Vulnerabilities Under Learned Network')),
+        title: Center(
+            child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const HomePage(),
+                      ));
+                },
+                child: const Text('Vulnerabilities Under Learned Network'))),
       ),
       drawer: const DrawerView(),
       body: Container(
@@ -46,9 +55,9 @@ class SupportPage extends StatelessWidget {
                 maxLines: 5, // Adjust based on your requirement
                 decoration: InputDecoration(
                   hintText: 'Enter your report here...',
-                  hintStyle: TextStyle(color: Theme.of(context).indicatorColor),
+                  hintStyle: TextStyle(color: Theme.of(context).hintColor),
                   filled: true,
-                  fillColor: Theme.of(context).cardColor,
+                  fillColor: Theme.of(context).focusColor,
                 ),
               ),
             ),
